@@ -1,6 +1,6 @@
 (function () {
 	
-	var fadeInOnScroll = function(element) {
+	var FadeInOnScroll = function(element) {
 		this.element = element;
 		this.$element = $(element);
 		this.options = {
@@ -13,23 +13,26 @@
 	FadeInOnScroll.prototype = {
 
 		defaults: {
-			duration: 250,
+			duration: 500,
 			delay: 0,
 			fromBottom: 100
 		},
 
 		_init: function() {
-            this.config = $.extend({}, this.defaults, this.options, this.metadata);
+            this.config = $.extend({}, this.defaults, this.options);
 
+			this.$element.css({opacity: "0"});
             var that = this;
 
-            $(window).scroll(function(e) { e.prevent(); that._onScroll(that); });
+            $(window).scroll(function(e) { e.preventDefault(); that._onScroll(that); });
 		},
 
 		_onScroll: function(that) {
 			var fromBottom = that._distanceFromBottom(that.$element);
 			if (fromBottom >= that.config.fromBottom) {
-				$el.css({opacity: "1"});
+				setTimeout(function(){
+					that.$element.animate({opacity: "1"}, that.config.duration);
+				}, that.config.delay);
 			}
 		},
 
